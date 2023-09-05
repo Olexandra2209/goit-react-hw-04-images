@@ -3,7 +3,7 @@ import { fetchImages } from './PixabayAPI';
 import { Searchbar } from './Searchbar/Searchbar';
 import ImageGallery from './ImageGallery/ImageGallery';
 import Button from './Button/Button';
-import Modal from './Modal/Modal';
+import { Modal } from './Modal/Modal';
 import CustomLoader from './Loader/Loader';
 
 export const App = () => {
@@ -14,10 +14,8 @@ export const App = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedImage, setSelectedImage] = useState('');
 
-  const showLoadMoreButton = images.length > 0 && images.length % 12 === 0;
-
   useEffect(() => {
-    if (query === '' || page === 0) return;
+    if (query === '') return;
 
     setIsLoading(true);
 
@@ -54,7 +52,9 @@ export const App = () => {
       <Searchbar onSubmit={handleSubmit} />
       <ImageGallery images={images} onItemClick={openModal} />
       {isLoading && <CustomLoader />}
-      {showLoadMoreButton && <Button onClick={handleLoadMore} />}
+      {images.length > 0 && images.length % 12 === 0 && (
+        <Button onClick={handleLoadMore} />
+      )}
       {showModal && (
         <Modal
           showModal={showModal}
